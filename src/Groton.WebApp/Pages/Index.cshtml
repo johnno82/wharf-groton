@@ -1,0 +1,106 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="text-center">
+                <h1 class="display-4">Welcome</h1>
+                <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <h2>Employees</h2>            
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col">            
+            <form asp-page="./Index" method="get">
+                <div class="form-actions no-color">
+                    <p>
+                        <a asp-page="./Employees/AddNew">Create New</a> |
+                        Search by:
+                        <input type="text" name="searchString" value="@Model.Input.SearchString" />
+                        <input type="submit" value="Search" class="btn btn-primary" />
+                        @if(Model.Input.SearchString?.Length > 0) {
+                            <span>| <a asp-page="./Index">Back to full List</a></span>
+                        }
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            @{
+                string prevDisabled = !Model.Employees.HasPreviousPage ? "disabled" : "";
+                string nextDisabled = !Model.Employees.HasNextPage ? "disabled" : "";
+            }
+            <a asp-page="./Index"
+               asp-route-sortColumn="@Model.Input.SortColumn"
+               asp-route-pageIndex="@(Model.Employees.PageIndex - 1)"
+               asp-route-searchString="@Model.Input.SearchString"
+               class="btn btn-primary @prevDisabled">
+                Previous
+            </a>
+            <a asp-page="./Index"
+               asp-route-sortColumn="@Model.Input.SortColumn"
+               asp-route-pageIndex="@(Model.Employees.PageIndex + 1)"
+               asp-route-searchString="@Model.Input.SearchString"
+               class="btn btn-primary @nextDisabled">
+                Next
+            </a>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        @{
+                            string[] columnNames = new[] {
+                                Html.DisplayNameFor(model => model.Employees.Items.First().EmployeeID),
+                                Html.DisplayNameFor(model => model.Employees.Items.First().Name),
+                                Html.DisplayNameFor(model => model.Employees.Items.First().JobTitle)
+                            };
+                        }
+                        @foreach (var columnName in columnNames)
+                        {
+                            <th>
+                                <a asp-page="./Index" asp-route-sortColumn="@columnName">
+                                    @columnName
+                                </a>
+                            </th>
+                        }
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Employees.Items)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EmployeeID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.JobTitle)
+                            </td>
+                            <td>
+                                <a asp-page="./Employees/Edit" asp-route-id="@item.EmployeeID">Edit</a> |
+                                <a asp-page="./Employees/Delete" asp-route-id="@item.EmployeeID">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

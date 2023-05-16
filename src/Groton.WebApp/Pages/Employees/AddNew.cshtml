@@ -1,0 +1,26 @@
+﻿@page
+@model Groton.WebApp.Pages.EmployeeModel
+@{
+    ViewData["Title"] = "AddNew";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <form id="employeeForm" method="post">
+            <h2>Employee Info</h2>
+            <a asp-page="/Index">Back to full List</a>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Name" class="form-control" aria-required="true" />
+                <label asp-for="Input.Name"></label>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div><div class="form-floating mb-3">
+                <input asp-for="Input.JobTitle" class="form-control" aria-required="true" />
+                <label asp-for="Input.JobTitle"></label>
+                <span asp-validation-for="Input.JobTitle" class="text-danger"></span>
+            </div>
+            <button id="save" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+        </form>
+    </div>
+</div>
